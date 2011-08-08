@@ -1,0 +1,31 @@
+import play._
+import play.test._
+
+import org.scalatest._
+import org.scalatest.junit._
+import org.scalatest.matchers._
+
+import models._
+
+class ${EntityName}Tests extends UnitFlatSpec with ShouldMatchers {
+
+  it should "create a ${EntityNameVar}" in {
+    ${EntityName}.deleteAll
+
+    ${DependentObjects}
+
+    // Create a new ${EntityNameVar}
+    ${EntityName}.build(${TestDataValues}).save
+
+    (${EntityName}.count) should be(1)
+
+    var fetched${EntityName}s = ${EntityName}.find("by${attributeName}", ${attributeValue}).fetch()
+
+    (fetched${EntityName}s.size) should be(1)
+
+    val first${EntityName} = fetched${EntityName}s(0)
+
+    (first${EntityName}) should not be (null)
+    ${assertions}
+  }
+}
