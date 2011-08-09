@@ -1,0 +1,82 @@
+package controllers
+
+import java.util._
+
+import play._
+import play.mvc._
+
+import models._
+
+object ${EntityName}sController extends Controller {
+
+  import views.${EntityName}s._
+  import play.data.validation._
+
+  def index = {
+    val all${EntityName}s = ${EntityName}.find(
+      "order by id desc").from(1).fetch(100);
+
+    html.index("All ${EntityName}s", all${EntityName}s)
+  }
+
+  def show(id: Long) = {
+
+	lookup(id) {
+	   html.show("${EntityName} " + id, ${EntityNameVar})
+	}
+  }
+
+  def new() = {
+     var ${EntityNameVar} = new ${EntityName}
+     html.new("${EntityName} " + id, ${EntityNameVar})
+  }
+
+  def edit(id: Long) = {
+
+	lookup(id) {
+	   html.edit("${EntityName} " + id, ${EntityNameVar})
+	}
+  }
+
+  def create() = {
+        var ${EntityNameVar} = new ${EntityName}
+        ${formData}
+        ${EntityNameVar}.save
+  
+        show(${EntityNameVar}.id)
+  }
+
+  def update(id: Long) = {
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+        ${formData}
+        ${EntityNameVar}.save
+        
+        show(id)
+
+    }.getOrElse {
+        NotFound("No such ${EntityName}")
+    }
+    
+	show(${EntityNameVar}.id)
+  }
+  
+  def delete(id: Long) = {
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+        ${EntityNameVar}.delete
+        
+        index
+
+    }.getOrElse {
+        NotFound("No such ${EntityName}")
+    }
+  }
+  
+  private def lookup(id: Long)(view: (${EntityName}) => Unit) = {
+
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+      view(${EntityNameVar})
+    }.getOrElse {
+      NotFound("No such ${EntityName}")
+    }
+  }
+}
