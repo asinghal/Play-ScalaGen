@@ -23,9 +23,11 @@ public class TemplatesHelper {
 		return template;
 	}
 
-	public static void flush(String parentDirectory, String directory, String filename, String content) {
+	public static void flush(String parentDirectory, String directory,
+			String filename, String content) {
 		try {
-			String dirName = BASE_DIR + SLASH + parentDirectory + SLASH + directory;
+			String dirName = BASE_DIR + SLASH + parentDirectory + SLASH
+					+ directory;
 
 			File dir = new File(dirName);
 			if (!dir.exists()) {
@@ -33,6 +35,9 @@ public class TemplatesHelper {
 			}
 
 			String outputFile = dirName + SLASH + filename;
+
+			// remove double seperators in the file name
+			outputFile = outputFile.replace(SLASH + SLASH, SLASH);
 
 			OutputStreamWriter fstream = new OutputStreamWriter(
 					new FileOutputStream(outputFile));

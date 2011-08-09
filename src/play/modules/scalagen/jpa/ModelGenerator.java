@@ -24,6 +24,8 @@ public class ModelGenerator {
 		TemplatesHelper.flush("app", "models", entityName + ".scala", template);
 
 		generateTests(entityName, entityVarName, attributes);
+
+		generateYML(entityName, entityVarName, attributes);
 	}
 
 	private static void generateTests(String entityName, String entityVarName,
@@ -116,7 +118,7 @@ public class ModelGenerator {
 				var = DEPENDENCY_TEMPLATE.replace("${attributeName}", varName);
 				var = var.replace("${attributeType}", varType);
 				DependentObjects.append(var).append("\n  ");
-				
+
 				testDataVal = varName;
 			}
 
@@ -154,5 +156,32 @@ public class ModelGenerator {
 		template = template.replace("${assertions}", assertions.toString());
 
 		return template;
+	}
+
+	private static void generateYML(String entityName, String entityVarName,
+			Map<String, String> attributes) {
+
+		StringBuilder yml = new StringBuilder();
+		yml.append("# This is test data for models.").append(entityName).append("\n\n\n");
+		yml.append("# ").append(entityName).append("(").append(entityVarName).append("1):\n");
+
+		for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+			String varName = attribute.getKey();
+			String varType = attribute.getValue();
+
+			yml.append("#     ").append(varName).append(": ");
+
+			if (TypeRegistry.isRegistered(varType)) {
+				yml.append(
+						TypeRegistry.getTestDataValue(varType)
+								.replace("\"", "")).append("\n");
+			} else {
+				yml.append(varName).append("1\n");
+			}
+		}
+
+		TemplatesHelper.flush("", "test", entityVarName + ".yml",
+				yml.toString());
+
 	}
 }

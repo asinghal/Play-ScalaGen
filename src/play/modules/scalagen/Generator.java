@@ -60,9 +60,14 @@ public class Generator {
 			attributes.put(key, value);
 		}
 
-		if (command.equals("--model")) {
+		if (command.equals("--model") || command.equals("--model-jpa") || command.equals("--m")) {
 			ModelGenerator.generate(entityName, attributes);
 		}
+		
+		if (command.equals("--scaffold") || command.equals("--scaffold-jpa") || command.equals("--s")) {
+			ModelGenerator.generate(entityName, attributes);
+		}
+		
 	}
 
 	private static void printHelp() {
@@ -83,5 +88,7 @@ public class Generator {
 				.println("Note: --scaffold and --model are shortcuts to generate JPA");
 		System.out
 				.println("Example: play scalagen:generate --scaffold User name:String login:String role:Role");
+		System.out
+		.println("For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role");
 	}
 }
