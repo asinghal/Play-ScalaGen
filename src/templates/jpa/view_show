@@ -1,0 +1,13 @@
+@(title:String, ${EntityNameVar}:models.${EntityName})
+@main(title) {
+
+<h1>${EntityName} Details</h1>
+
+${ShowDetails}
+
+<br />
+
+<a href="@action(controllers.${EntityName}sController.edit(${EntityNameVar}.id)">Edit</a>|&nbsp;
+<a href="@action(controllers.${EntityName}sController.index">All ${EntityName}s</a>
+
+}

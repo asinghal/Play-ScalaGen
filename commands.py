@@ -7,7 +7,7 @@ MODULE = 'scalagen'
 
 # Commands that are specific to your module
 
-COMMANDS = ['scalagen:generate']
+COMMANDS = ['scalagen:generate', 'scalagen:g']
 
 def execute(**kargs):
     command = kargs.get("command")
@@ -15,7 +15,7 @@ def execute(**kargs):
     args = kargs.get("args")
     env = kargs.get("env")
 
-    if command == "scalagen:generate":
+    if command in ("scalagen:generate", "scalagen:g"):
         print "~ Generating code"
         print "~ "
         java_cmd = app.java_cmd([], None, "play.modules.scalagen.Generator", args)

@@ -1,0 +1,13 @@
+@(title:String, ${EntityNameVar}:models.${EntityName})
+@import views.${EntityName}s.html.form
+@main(title) {
+
+<h1>Edit ${EntityName}</h1>
+
+@form(_${EntityNameVar}=${EntityNameVar}, _action="/${EntityNameVar}s/@${EntityNameVar}.id/update")
+
+<br />
+
+<a href="@action(controllers.${EntityName}sController.index">All ${EntityName}s</a>
+
+}
