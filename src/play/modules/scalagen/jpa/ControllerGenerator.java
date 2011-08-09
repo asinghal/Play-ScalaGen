@@ -1,3 +1,18 @@
+/*
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Created on: 8th August 2011
+ */
 package play.modules.scalagen.jpa;
 
 import java.util.Map;
@@ -5,6 +20,16 @@ import java.util.Map;
 import play.modules.scalagen.TypeRegistry;
 import play.modules.scalagen.util.TemplatesHelper;
 
+/**
+ * <p>
+ * Generator for controller classes and routes. Parses the attributes supplied
+ * on command line to generate the various CRUD operations in the controller
+ * class. The code generation is based on a controller per persistent model
+ * idea.
+ * </p>
+ * 
+ * @author Aishwarya Singhal
+ */
 public class ControllerGenerator {
 
 	private static final String PARAM_TEMPLATE = "params.get(\"${attributeName}\")";
@@ -76,6 +101,7 @@ public class ControllerGenerator {
 			String param = PARAM_TEMPLATE.replace("${attributeName}", varName);
 
 			if (!TypeRegistry.isRegistered(varType)) {
+				// unknown type, is it a custom data type/ another model ?
 				var = ATTRIBUTE_RELATIONSHIP_TEMPLATE.replace(
 						"${EntityNameVar}", entityVarName);
 				var = var.replace("${modelName}", varType);

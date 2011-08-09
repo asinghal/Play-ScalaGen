@@ -1,11 +1,45 @@
+/*
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Created on: 8th August 2011
+ */
 package play.modules.scalagen.jpa;
 
 import java.util.Map;
 
 import play.modules.scalagen.util.TemplatesHelper;
 
+/**
+ * <p>
+ * Generator for view files. For each model the following files are generated:
+ * <ul>
+ * <li>index.html.scala : Displays all records for the model.
+ * <li>show.html.scala : Displays details of a record.
+ * <li>newValue.html.scala : Displays a form to create a new record.
+ * <li>edit.html.scala : Displays a form to edit an existing record.
+ * <li>form.html.scala : Generates the form for a model.
+ * </ul>
+ * </p>
+ * 
+ * @author Aishwarya Singhal
+ */
 public class ViewGenerator {
 
+	/**
+	 * 
+	 * @param entityName
+	 * @param attributes
+	 */
 	public static void generate(String entityName,
 			Map<String, String> attributes) {
 

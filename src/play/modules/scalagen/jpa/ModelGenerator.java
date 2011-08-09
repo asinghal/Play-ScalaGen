@@ -1,3 +1,18 @@
+/*
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Created on: 8th August 2011
+ */
 package play.modules.scalagen.jpa;
 
 import java.util.Map;
@@ -5,10 +20,23 @@ import java.util.Map;
 import play.modules.scalagen.TypeRegistry;
 import play.modules.scalagen.util.TemplatesHelper;
 
+/**
+ * <p>
+ * Generator for JPA based model classes and associated unit tests using the
+ * attributes supplied on command line.
+ * </p>
+ * 
+ * @author Aishwarya Singhal
+ */
 public class ModelGenerator {
 	private static final String ATTRIBUTE_TEMPLATE = "var ${attributeName}: ${attributeType} = ${attributeDefaultValue}";
 	private static final String DEPENDENCY_TEMPLATE = "var ${attributeName} = null";
 
+	/**
+	 * 
+	 * @param entityName
+	 * @param attributes
+	 */
 	public static void generate(String entityName,
 			Map<String, String> attributes) {
 		String template = TemplatesHelper.getTemplate("jpa/model");
