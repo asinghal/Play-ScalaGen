@@ -10,9 +10,10 @@ public class ControllerGenerator {
 	private static final String PARAM_TEMPLATE = "params.get(\"${attributeName}\")";
 
 	private static final String ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) ${param}.to${varTypeName} else ${defaultValue}";
+	private static final String DATE_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) new Date(${param}) else ${defaultValue}";
 	private static final String STRING_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = ${param}";
 
-	private static final String ATTRIBUTE_RELATIONSHIP_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) ${modelName}.findById(Long(${param})) else null";
+	private static final String ATTRIBUTE_RELATIONSHIP_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) ${modelName}.findById(${param}.toInt).getOrElse(null) else null";
 
 	/**
 	 * 
@@ -79,6 +80,8 @@ public class ControllerGenerator {
 			} else {
 				if ("String".equals(varType)) {
 					var = STRING_ATTRIBUTE_TEMPLATE;
+				} else if ("Date".equals(varType)) {
+					var = DATE_ATTRIBUTE_TEMPLATE;
 				} else {
 					var = ATTRIBUTE_TEMPLATE;
 				}

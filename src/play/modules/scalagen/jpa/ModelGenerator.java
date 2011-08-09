@@ -7,7 +7,7 @@ import play.modules.scalagen.util.TemplatesHelper;
 
 public class ModelGenerator {
 	private static final String ATTRIBUTE_TEMPLATE = "var ${attributeName}: ${attributeType} = ${attributeDefaultValue}";
-	private static final String DEPENDENCY_TEMPLATE = "var ${attributeName} = new ${attributeType}";
+	private static final String DEPENDENCY_TEMPLATE = "var ${attributeName} = null";
 
 	public static void generate(String entityName,
 			Map<String, String> attributes) {
@@ -130,12 +130,18 @@ public class ModelGenerator {
 
 			// build the assertion
 			if (dependency) {
-				assertions.append("(first").append(entityName).append(".")
-						.append(varName).append(") should not be (null)\n    ");
+				// assertions.append("(first").append(entityName).append(".")
+				// .append(varName).append(") should not be (null)\n    ");
 			} else {
-				assertions.append("(first").append(entityName).append(".")
-						.append(varName).append(") should be (")
-						.append(testDataVal).append(")\n    ");
+				if ("Date".equals(varType)) {
+					assertions.append("(first").append(entityName).append(".")
+							.append(varName)
+							.append(") should not be (null)\n    ");
+				} else {
+					assertions.append("(first").append(entityName).append(".")
+							.append(varName).append(") should be (")
+							.append(testDataVal).append(")\n    ");
+				}
 
 				// if the fetch query has not been defined yet, define now.
 				if (pending) {
@@ -162,8 +168,10 @@ public class ModelGenerator {
 			Map<String, String> attributes) {
 
 		StringBuilder yml = new StringBuilder();
-		yml.append("# This is test data for models.").append(entityName).append("\n\n\n");
-		yml.append("# ").append(entityName).append("(").append(entityVarName).append("1):\n");
+		yml.append("# This is test data for models.").append(entityName)
+				.append("\n\n\n");
+		yml.append("# ").append(entityName).append("(").append(entityVarName)
+				.append("1):\n");
 
 		for (Map.Entry<String, String> attribute : attributes.entrySet()) {
 			String varName = attribute.getKey();

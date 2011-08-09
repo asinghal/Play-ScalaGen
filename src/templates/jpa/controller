@@ -22,19 +22,19 @@ object ${EntityName}sController extends Controller {
   def show(id: Long) = {
 
 	lookup(id) {
-	   html.show("${EntityName} " + id, ${EntityNameVar})
+	   html.show("${EntityName} " + id, _)
 	}
   }
 
-  def new() = {
+  def newValue() = {
      var ${EntityNameVar} = new ${EntityName}
-     html.new("${EntityName} " + id, ${EntityNameVar})
+     html.newValue("New ${EntityName}", ${EntityNameVar})
   }
 
   def edit(id: Long) = {
 
 	lookup(id) {
-	   html.edit("${EntityName} " + id, ${EntityNameVar})
+	   html.edit("${EntityName} " + id, _)
 	}
   }
 
@@ -56,8 +56,6 @@ object ${EntityName}sController extends Controller {
     }.getOrElse {
         NotFound("No such ${EntityName}")
     }
-    
-	show(${EntityNameVar}.id)
   }
   
   def delete(id: Long) = {

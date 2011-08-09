@@ -94,7 +94,7 @@ public class ViewGenerator {
 
 		TemplatesHelper.flush("app",
 				"views" + System.getProperty("file.separator") + entityName
-						+ "s", "new.scala.html", indexTemplate);
+						+ "s", "newValue.scala.html", indexTemplate);
 	}
 
 	private static void generateEdit(String entityName, String entityVarName,

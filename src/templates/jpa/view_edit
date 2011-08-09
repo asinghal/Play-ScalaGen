@@ -8,6 +8,6 @@
 
 <br />
 
-<a href="@action(controllers.${EntityName}sController.index">All ${EntityName}s</a>
+<a href="@action(controllers.${EntityName}sController.index)">All ${EntityName}s</a>
 
 }

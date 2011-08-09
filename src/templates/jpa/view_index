@@ -26,6 +26,6 @@
 
 <br />
 
-<a href="@action(controllers.${EntityName}sController.new">Add a new ${EntityName}</a>
+<a href="@action(controllers.${EntityName}sController.newValue)">Add a new ${EntityName}</a>
 
 }

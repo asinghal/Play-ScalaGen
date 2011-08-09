@@ -1,6 +1,6 @@
 GET     /${EntityNameVar}s/                                 ${EntityName}sController.index
 GET     /${EntityNameVar}s/{id}                             ${EntityName}sController.show
-GET     /${EntityNameVar}s/new                              ${EntityName}sController.new
+GET     /${EntityNameVar}s/new                              ${EntityName}sController.newValue
 *     /${EntityNameVar}s/create                             ${EntityName}sController.create
 GET     /${EntityNameVar}s/{id}/edit                        ${EntityName}sController.edit
 *     /${EntityNameVar}s/{id}/update                        ${EntityName}sController.update
