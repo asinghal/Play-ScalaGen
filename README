@@ -1,0 +1,43 @@
+Scala code generators for the Play! framework
+--------------------------------------------------------------------------
+
+This module can be used to generate Scala code. It can generate JPA based models, CRUD and associated test cases.
+
+--------------------------------------------------------------------------
+Options:
+--------------------------------------------------------------------------
+
+--scaffold-jpa [entity name] [attribute1:type1]*     Generates the JPA based model and associated CRUD code.
+--model-jpa [entity name] [attribute1:type1]*         Generates the JPA based model.
+
+Note: --scaffold and --model are shortcuts to generate JPA
+
+
+--------------------------------------------------------------------------
+Usage Examples: 
+--------------------------------------------------------------------------
+
+1. Generating a CRUD scaffold:
+--------------------------------------------------------------------------
+
+play scalagen:generate --scaffold User name:String login:String role:Role
+
+For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role
+
+This will create a controller, view files for CRUD, JPA model, unit tests for the model and selenium tests for CRUD operations.
+
+2. Generating a JPA model:
+--------------------------------------------------------------------------
+
+play scalagen:generate --model User name:String login:String role:Role
+
+For the lazy, the following does the same: play scalagen:g --m User name:String login:String role:Role
+
+This will create a JPA model and associated unit tests.
+
+--------------------------------------------------------------------------
+Known Limitations: 
+--------------------------------------------------------------------------
+1. This module can only create models for basic data types. All other data types are assumed to be many-to-one relationships.
+2. The parameters passed on command line can not have space between attribute name and type.
+3. The module only supports JPA via Hibernate at the moment.
