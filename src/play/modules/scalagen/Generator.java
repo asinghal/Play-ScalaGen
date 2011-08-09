@@ -22,6 +22,7 @@ import java.util.Map;
 import play.Play;
 import play.modules.scalagen.jpa.ControllerGenerator;
 import play.modules.scalagen.jpa.ModelGenerator;
+import play.modules.scalagen.jpa.SeleniumTestGenerator;
 import play.modules.scalagen.jpa.ViewGenerator;
 
 /**
@@ -69,6 +70,7 @@ public class Generator {
 		if (command.equals("--scaffold") || command.equals("--scaffold-jpa") || command.equals("--s")) {
 			ModelGenerator.generate(entityName, attributes);
 			ViewGenerator.generate(entityName, attributes);
+			SeleniumTestGenerator.generate(entityName, attributes);
 			ControllerGenerator.generate(entityName, attributes);
 		}
 		

@@ -3,6 +3,6 @@
 <form id="${EntityName}sForm" name="${EntityName}sForm" method="POST" action="@_action">
 ${FormInputs}
 <br/><br/>
-<input type="submit" value="Submit" />
-<input type="reset" value="Reset" />
+<input type="submit" id="submit" value="Submit" />
+<input type="reset" id="reset" value="Reset" />
 </form>

@@ -72,4 +72,8 @@ object ${EntityName}sController extends Controller {
         NotFound("No such ${EntityName}")
     }
   }
+  
+  private def isEmptyString(input : String) : Boolean = {
+  		(input == null || "".equals(input)) 
+  }
 }

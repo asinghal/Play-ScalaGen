@@ -9,11 +9,11 @@ public class ControllerGenerator {
 
 	private static final String PARAM_TEMPLATE = "params.get(\"${attributeName}\")";
 
-	private static final String ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) ${param}.to${varTypeName} else ${defaultValue}";
-	private static final String DATE_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) new Date(${param}) else ${defaultValue}";
+	private static final String ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) ${param}.to${varTypeName} else ${defaultValue}";
+	private static final String DATE_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) new Date(${param}) else ${defaultValue}";
 	private static final String STRING_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = ${param}";
 
-	private static final String ATTRIBUTE_RELATIONSHIP_TEMPLATE = "${EntityNameVar}.${attributeName} = if (${param} != null) ${modelName}.findById(${param}.toInt).getOrElse(null) else null";
+	private static final String ATTRIBUTE_RELATIONSHIP_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) ${modelName}.findById(${param}.toLong).getOrElse(null) else null";
 
 	/**
 	 * 
@@ -31,8 +31,9 @@ public class ControllerGenerator {
 		template = template.replace("${EntityNameVar}", entityVarName);
 
 		template = buildAttributes(template, entityVarName, attributes);
-		
-		TemplatesHelper.flush("app", "controllers", entityName + "sController.scala", template);
+
+		TemplatesHelper.flush("app", "controllers", entityName
+				+ "sController.scala", template);
 		buildRoutes(entityName, entityVarName);
 	}
 
@@ -42,7 +43,8 @@ public class ControllerGenerator {
 		template = template.replace("${EntityNameVar}", entityVarName);
 
 		System.out.println();
-		System.out.println("Please add the following entries to the routes file");
+		System.out
+				.println("Please add the following entries to the routes file");
 		System.out.println(template);
 		System.out.println();
 	}

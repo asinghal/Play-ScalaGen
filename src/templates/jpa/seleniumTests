@@ -1,0 +1,28 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium 'All ${EntityName}s'}
+    open('/${EntityNameVar}s/')
+    assertTitle('All ${EntityName}s')
+#{/selenium}
+
+#{selenium 'Create a new ${EntityName}'}
+    open('/${EntityNameVar}s/new')
+	${formData}
+    clickAndWait('id=submit')
+    verifyTitle('${EntityName}*')
+#{/selenium}
+
+#{selenium 'Update a ${EntityName}'}
+    open('/${EntityNameVar}s/')
+    clickAndWait('link=Edit')
+	verifyTitle('${EntityName}*')
+	${editFormData}
+    clickAndWait('id=submit')
+    verifyTitle('${EntityName}*')
+#{/selenium}
+
+#{selenium 'Delete a ${EntityName}'}
+    open('/${EntityNameVar}s/')
+    clickAndWait('link=Delete')
+    assertTitle('All ${EntityName}s')
+#{/selenium}

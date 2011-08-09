@@ -4,7 +4,7 @@
 
 <h1>Edit ${EntityName}</h1>
 
-@form(_${EntityNameVar}=${EntityNameVar}, _action="/${EntityNameVar}s/@${EntityNameVar}.id/update")
+@form(_${EntityNameVar}=${EntityNameVar}, _action="/${EntityNameVar}s/"+ ${EntityNameVar}.id +"/update")
 
 <br />
 
