@@ -1,6 +1,6 @@
 @(_${EntityNameVar}:models.${EntityName}, _action: String)
 
-<form id="${EntityName}sForm" name="${EntityName}sForm" action="@_action">
+<form id="${EntityName}sForm" name="${EntityName}sForm" method="POST" action="@_action">
 ${FormInputs}
 <br/><br/>
 <input type="submit" value="Submit" />
