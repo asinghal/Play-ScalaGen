@@ -21,9 +21,11 @@ object ${EntityName}sController extends Controller {
 
   def show(id: Long) = {
 
-	lookup(id) {
-	   html.show("${EntityName} " + id, _)
-	}
+	${EntityName}.findById(id).map { ${EntityNameVar} =>
+      html.show("${EntityName} " + id, ${EntityNameVar})
+    }.getOrElse {
+      NotFound("No such ${EntityName}")
+    }
   }
 
   def newValue() = {
@@ -32,10 +34,12 @@ object ${EntityName}sController extends Controller {
   }
 
   def edit(id: Long) = {
-
-	lookup(id) {
-	   html.edit("${EntityName} " + id, _)
-	}
+  
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+      html.edit("${EntityName} " + id, ${EntityNameVar})
+    }.getOrElse {
+      NotFound("No such ${EntityName}")
+    }
   }
 
   def create() = {
@@ -66,15 +70,6 @@ object ${EntityName}sController extends Controller {
 
     }.getOrElse {
         NotFound("No such ${EntityName}")
-    }
-  }
-  
-  private def lookup(id: Long)(view: (${EntityName}) => Unit) = {
-
-    ${EntityName}.findById(id).map { ${EntityNameVar} =>
-      view(${EntityNameVar})
-    }.getOrElse {
-      NotFound("No such ${EntityName}")
     }
   }
 }
