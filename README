@@ -12,6 +12,10 @@ Options:
 
 Note: --scaffold and --model are shortcuts to generate JPA
 
+These generators can only be used from inside a Scala Play! project. To create a new project, use the following commands:
+play new myproject --with scala
+cd myproject
+play scalagen:scaffold <provide details of the scaffold you need to create>
 
 --------------------------------------------------------------------------
 Usage Examples: 
