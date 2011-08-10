@@ -111,7 +111,11 @@ public class ControllerGenerator {
 				} else if ("Date".equals(varType)) {
 					var = DATE_ATTRIBUTE_TEMPLATE;
 				} else {
+					
 					var = ATTRIBUTE_TEMPLATE;
+					if (TypeRegistry.isInternalDataType(varType)) {
+						var = "// " + var;
+					}
 				}
 				var = var.replace("${EntityNameVar}", entityVarName);
 				var = var.replace("${varTypeName}", varType);

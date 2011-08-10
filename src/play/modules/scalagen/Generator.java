@@ -56,24 +56,33 @@ public class Generator {
 			// each attribute should be of the form name:type
 			String[] entry = arg.split(":");
 			// the first element should be the key (attribute name)
-			String key = entry[0].trim();
+			String name = entry[0].trim();
 			// the first element should be the value (attribute type)
-			String value = entry[1].trim();
+			String type = entry[1].trim();
 
-			attributes.put(key, value);
+			// if fully qualified internal data types are provided, register on
+			// the fly.
+			if (TypeRegistry.isInternalDataType(type)
+					&& !TypeRegistry.isRegistered(type.toLowerCase())) {
+				TypeRegistry.register(type, "null", "null");
+			}
+
+			attributes.put(name, type);
 		}
 
-		if (command.equals("--model") || command.equals("--model-jpa") || command.equals("--m")) {
+		if (command.equals("--model") || command.equals("--model-jpa")
+				|| command.equals("--m")) {
 			ModelGenerator.generate(entityName, attributes);
 		}
-		
-		if (command.equals("--scaffold") || command.equals("--scaffold-jpa") || command.equals("--s")) {
+
+		if (command.equals("--scaffold") || command.equals("--scaffold-jpa")
+				|| command.equals("--s")) {
 			ModelGenerator.generate(entityName, attributes);
 			ViewGenerator.generate(entityName, attributes);
 			SeleniumTestGenerator.generate(entityName, attributes);
 			ControllerGenerator.generate(entityName, attributes);
 		}
-		
+
 	}
 
 	private static void printHelp() {
@@ -95,6 +104,6 @@ public class Generator {
 		System.out
 				.println("Example: play scalagen:generate --scaffold User name:String login:String role:Role");
 		System.out
-		.println("For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role");
+				.println("For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role");
 	}
 }
