@@ -219,6 +219,19 @@ public class ViewGenerator {
 	}
 
 	private static String capitalize(String value) {
-		return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+			if (i == 0) {
+				c = Character.toUpperCase(c);
+			} else if (Character.isUpperCase(c)) {
+				sb.append(" ");
+			}
+
+			sb.append(c);
+		}
+		
+		return sb.toString().trim();
 	}
 }

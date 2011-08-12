@@ -172,7 +172,7 @@ public class ModelGenerator {
 				}
 
 				// if the fetch query has not been defined yet, define now.
-				if (pending) {
+				if (pending && !testDataVal.startsWith("new ")) {
 					String query = Character.toUpperCase(varName.charAt(0))
 							+ varName.substring(1);
 					template = template.replace("${attributeName}", query);
