@@ -35,8 +35,6 @@ public class ControllerGenerator {
 	private static final String PARAM_TEMPLATE = "params.get(\"${attributeName}\")";
 
 	private static final String ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) ${param}.to${varTypeName} else ${defaultValue}";
-	private static final String DATE_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) new Date(${param}) else ${defaultValue}";
-	private static final String STRING_ATTRIBUTE_TEMPLATE = "${EntityNameVar}.${attributeName} = ${param}";
 
 	private static final String ATTRIBUTE_RELATIONSHIP_TEMPLATE = "${EntityNameVar}.${attributeName} = if (!isEmptyString(${param})) ${modelName}.findById(${param}.toLong).getOrElse(null) else null";
 
@@ -105,27 +103,19 @@ public class ControllerGenerator {
 				var = ATTRIBUTE_RELATIONSHIP_TEMPLATE.replace(
 						"${EntityNameVar}", entityVarName);
 				var = var.replace("${modelName}", varType);
-			} else {
-				if ("String".equals(varType)) {
-					var = STRING_ATTRIBUTE_TEMPLATE;
-				} else if ("Date".equals(varType)) {
-					var = DATE_ATTRIBUTE_TEMPLATE;
-				} else {
-					
-					var = ATTRIBUTE_TEMPLATE;
-					if (TypeRegistry.isInternalDataType(varType)) {
-						var = "// " + var;
-					}
-				}
+			} else if (TypeRegistry.isInternalDataType(varType)) {
+				var = ATTRIBUTE_TEMPLATE;
 				var = var.replace("${EntityNameVar}", entityVarName);
 				var = var.replace("${varTypeName}", varType);
 			}
 
-			var = var.replace("${attributeName}", varName);
-			var = var.replace("${param}", param);
-			var = var.replace("${defaultValue}", defaultValue);
+			if (null != var) {
+				var = var.replace("${attributeName}", varName);
+				var = var.replace("${param}", param);
+				var = var.replace("${defaultValue}", defaultValue);
 
-			varDefinitions.append(var).append("\n        ");
+				varDefinitions.append(var).append("\n        ");
+			}
 		}
 
 		template = template.replace("${formData}", varDefinitions.toString());

@@ -23,6 +23,7 @@ import play.Play;
 import play.modules.scalagen.jpa.ControllerGenerator;
 import play.modules.scalagen.jpa.ModelGenerator;
 import play.modules.scalagen.jpa.SeleniumTestGenerator;
+import play.modules.scalagen.jpa.UtilsGenerator;
 import play.modules.scalagen.jpa.ViewGenerator;
 
 /**
@@ -72,11 +73,13 @@ public class Generator {
 
 		if (command.equals("--model") || command.equals("--model-jpa")
 				|| command.equals("--m")) {
+			UtilsGenerator.generate();
 			ModelGenerator.generate(entityName, attributes);
 		}
 
 		if (command.equals("--scaffold") || command.equals("--scaffold-jpa")
 				|| command.equals("--s")) {
+			UtilsGenerator.generate();
 			ModelGenerator.generate(entityName, attributes);
 			ViewGenerator.generate(entityName, attributes);
 			SeleniumTestGenerator.generate(entityName, attributes);

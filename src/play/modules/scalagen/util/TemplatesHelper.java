@@ -25,7 +25,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 /**
- * <p>General file processing (read/ write) utilities.</p>
+ * <p>
+ * General file processing (read/ write) utilities.
+ * </p>
  * 
  * @author Aishwarya Singhal
  */
@@ -64,13 +66,28 @@ public class TemplatesHelper {
 			BufferedWriter out = new BufferedWriter(fstream);
 			try {
 				out.write(content);
-				System.out.println(outputFile);
+				System.out.println("* Created " + outputFile);
 			} finally {
 				out.close();
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+
+	/**
+	 * Checks if a file already exists by the provided name.
+	 * 
+	 * @param parentDirectory
+	 * @param directory
+	 * @param filename
+	 * @return true if it exists
+	 */
+	public static boolean exists(String parentDirectory, String directory,
+			String filename) {
+		String fileName = BASE_DIR + SLASH + parentDirectory + SLASH
+				+ directory + SLASH + filename;
+		return new File(fileName).exists();
 	}
 
 	private static String read(InputStream in) {

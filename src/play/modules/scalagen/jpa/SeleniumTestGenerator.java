@@ -61,12 +61,6 @@ public class SeleniumTestGenerator {
 			String value = TypeRegistry.getTestDataValue(varType).replace("\"",
 					"");
 
-			if ("Date".equals(varType)) {
-				value = "";
-				editFormData.append("type('id=").append(varName).append("', '")
-						.append(value).append("')\n");
-			}
-
 			formData.append("type('id=").append(varName).append("', '")
 					.append(value).append("')\n");
 		}

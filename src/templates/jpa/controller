@@ -7,6 +7,9 @@ import play.mvc._
 
 import models._
 
+/**
+ * Controller class for ${EntityName}. Defines methods for all CRUD operations.
+ */
 object ${EntityName}sController extends Controller {
 
   import views.${EntityName}s._
@@ -44,6 +47,7 @@ object ${EntityName}sController extends Controller {
 
   def create() = {
         var ${EntityNameVar} = new ${EntityName}
+        ${EntityName}.bind(params, ${EntityNameVar})
         ${formData}
         ${EntityNameVar}.save
   
@@ -52,6 +56,7 @@ object ${EntityName}sController extends Controller {
 
   def update(id: Long) = {
     ${EntityName}.findById(id).map { ${EntityNameVar} =>
+        ${EntityName}.bind(params, ${EntityNameVar})
         ${formData}
         ${EntityNameVar}.save
         

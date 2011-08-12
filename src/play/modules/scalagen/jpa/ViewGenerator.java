@@ -15,8 +15,10 @@
  */
 package play.modules.scalagen.jpa;
 
+import java.util.Calendar;
 import java.util.Map;
 
+import play.modules.scalagen.TypeRegistry;
 import play.modules.scalagen.util.TemplatesHelper;
 
 /**
@@ -46,6 +48,7 @@ public class ViewGenerator {
 		String entityVarName = Character.toLowerCase(entityName.charAt(0))
 				+ entityName.substring(1);
 
+		generateDateInput();
 		generateIndex(entityName, entityVarName, attributes);
 		generateShow(entityName, entityVarName, attributes);
 		generateNew(entityName, entityVarName, attributes);
@@ -155,14 +158,22 @@ public class ViewGenerator {
 
 		for (Map.Entry<String, String> attribute : attributes.entrySet()) {
 			String varName = attribute.getKey();
+			String varType = attribute.getValue();
+			varType = TypeRegistry.getTypeName(varType);
 
 			formData.append("<br/>    <label for=\"").append(varName)
 					.append("\">").append(capitalize(varName))
 					.append("</label>:");
-			formData.append("<input type=\"text\" id=\"").append(varName)
-					.append("\" name=\"").append(varName)
-					.append("\" value=\"@_").append(entityVarName).append(".")
-					.append(varName).append("\" />\n");
+			if (!varType.equals("Date")
+					&& !varType.equals(Calendar.class.getName())) {
+				formData.append("<input type=\"text\" id=\"").append(varName)
+						.append("\" name=\"").append(varName)
+						.append("\" value=\"@_").append(entityVarName)
+						.append(".").append(varName).append("\" />\n");
+			} else {
+				formData.append(getDateElement(varName));
+			}
+
 		}
 
 		formTemplate = formTemplate.replace("${FormInputs}",
@@ -174,6 +185,37 @@ public class ViewGenerator {
 		TemplatesHelper.flush("app",
 				"views" + System.getProperty("file.separator") + entityName
 						+ "s", "form.scala.html", formTemplate);
+	}
+
+	private static void generateDateInput() {
+		if (!TemplatesHelper.exists("app", "views", "dateInput.scala.html")) {
+			String indexTemplate = TemplatesHelper
+					.getTemplate("jpa/view_dateInput");
+
+			int year = Calendar.getInstance().get(Calendar.YEAR) - 5;
+			StringBuilder formData = new StringBuilder();
+
+			for (int i = year; i < year + 11; i++) {
+				formData.append("<option value=\"").append(year).append("\">")
+						.append(i).append("</option>\n");
+			}
+
+			indexTemplate = indexTemplate.replace("${years}",
+					formData.toString());
+			TemplatesHelper.flush("app", "views", "dateInput.scala.html",
+					indexTemplate);
+		}
+	}
+
+	private static String getDateElement(String varName) {
+		StringBuilder formData = new StringBuilder();
+
+		formData.append("@dateInput(_monthElement=\"").append(varName)
+				.append("_month\", _dayElement=\"").append(varName)
+				.append("_day\", _yearElement=\"").append(varName)
+				.append("_year\")\n");
+
+		return formData.toString();
 	}
 
 	private static String capitalize(String value) {
