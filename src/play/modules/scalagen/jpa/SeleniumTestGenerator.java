@@ -15,6 +15,7 @@
  */
 package play.modules.scalagen.jpa;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import play.modules.scalagen.TypeRegistry;
@@ -60,6 +61,11 @@ public class SeleniumTestGenerator {
 
 			String value = TypeRegistry.getTestDataValue(varType).replace("\"",
 					"");
+
+			if ("Date".equals(varType)
+					|| Calendar.class.getName().equals(varType)) {
+				continue;
+			}
 
 			formData.append("type('id=").append(varName).append("', '")
 					.append(value).append("')\n");

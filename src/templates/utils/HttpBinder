@@ -31,7 +31,7 @@ trait HttpBinder[T] {
   def bind(params: Params, bean: AnyRef) = {
     for (field <- bean.getClass.getDeclaredFields) {
       var s: String = params.get(field.getName())
-      if (field.getType == classOf[Date] || field.getType == classOf[Calendar]) {
+      if ((field.getType == classOf[Date] || field.getType == classOf[Calendar]) && params.get(field.getName() + "_day") != null) {
         s = params.get(field.getName() + "_month") + "/" + params.get(field.getName() + "_day") +
           "/" + params.get(field.getName() + "_year")
       }
