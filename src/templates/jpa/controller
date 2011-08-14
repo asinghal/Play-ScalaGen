@@ -17,7 +17,7 @@ object ${EntityName}sController extends Controller {
 
   def index = {
     val all${EntityName}s = ${EntityName}.find(
-      "order by id desc").from(1).fetch(100);
+      "order by id desc").from(0).fetch(100);
 
     html.index("All ${EntityName}s", all${EntityName}s)
   }
