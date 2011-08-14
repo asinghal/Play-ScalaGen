@@ -1,0 +1,45 @@
+/** Main layout **/
+
+html, body {
+    background: #364B66 !important;
+    font-family: Helvetica, Arial, Sans !important;
+	font-size: 12px;
+}
+
+body {
+    width: 900px;
+    padding: 0 30px;
+    margin: auto;
+    color: #869AB1;
+}
+
+a {
+    color: #BAC36E;
+    font-weight: bold;
+    text-decoration: none;
+    background: #3C4313;
+    padding: 2px;
+	-webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+#main {
+    padding: 10px;
+    background: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+#main .pageTitle {
+    margin: 0;
+    font-size: 36px;
+}
+
+#main table.listing {
+	border-collapse:collapse;
+}
+
+.listing td, th {
+	border:1px solid #EEE;
+  padding:5px;
+}

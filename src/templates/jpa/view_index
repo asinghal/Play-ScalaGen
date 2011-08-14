@@ -1,9 +1,9 @@
 @(title:String, all${EntityName}s:List[models.${EntityName}])
 @main(title) {
 
-<h1>Listing ${EntityName}s</h1>
+<span class="pageTitle">Listing ${EntityName}s</span>
 
-<table>
+<table class="listing">
   <tr>
     ${TableHeaders}
     <th></th>

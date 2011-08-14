@@ -54,6 +54,17 @@ public class ViewGenerator {
 		generateNew(entityName, entityVarName, attributes);
 		generateEdit(entityName, entityVarName, attributes);
 		generateForm(entityName, entityVarName, attributes);
+		generateCSS();
+	}
+
+	private static void generateCSS() {
+		if (TemplatesHelper.canOverwrite("public", "stylesheets", "main.css")) {
+			String cssTemplate = TemplatesHelper
+					.getTemplate("utils/scaffold_css");
+			TemplatesHelper.flush("public", "stylesheets", "main.css",
+					cssTemplate);
+			System.out.println("*** Please make sure that the @body call in main.scala.html is wrapped around with <div id=\"main\"> tags");
+		}
 	}
 
 	private static void generateIndex(String entityName, String entityVarName,
@@ -231,7 +242,7 @@ public class ViewGenerator {
 
 			sb.append(c);
 		}
-		
+
 		return sb.toString().trim();
 	}
 }

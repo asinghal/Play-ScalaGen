@@ -1,7 +1,7 @@
 @(title:String, ${EntityNameVar}:models.${EntityName})
 @main(title) {
 
-<h1>${EntityName} Details</h1>
+<span class="pageTitle">${EntityName} Details</span>
 
 ${ShowDetails}
 

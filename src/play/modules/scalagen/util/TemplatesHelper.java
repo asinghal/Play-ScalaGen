@@ -90,6 +90,30 @@ public class TemplatesHelper {
 		return new File(fileName).exists();
 	}
 
+	public static boolean canOverwrite(String parentDirectory,
+			String directory, String filename) {
+		boolean canOverwrite = false;
+		if (TemplatesHelper.exists(parentDirectory, directory, filename)) {
+			System.out.print(filename + " already exists. Overwrite (Y/N) ? : ");
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					System.in));
+			String overwrite = null;
+			try {
+				overwrite = br.readLine();
+				if (overwrite != null && overwrite.toUpperCase().equals("Y")) {
+					canOverwrite = true;
+				} else {
+					System.out.println("Skipping generation of " + filename);
+				}
+			} catch (IOException e) {
+				System.out.println("Error reading the response!");
+				System.exit(1);
+			}
+		}
+
+		return canOverwrite;
+	}
+
 	private static String read(InputStream in) {
 		StringBuilder sb = new StringBuilder();
 		try {

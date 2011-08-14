@@ -2,7 +2,7 @@
 @import views.${EntityName}s.html.form
 @main(title) {
 
-<h1>New ${EntityName}</h1>
+<span class="pageTitle">New ${EntityName}</span>
 
 @form(_${EntityNameVar}=${EntityNameVar}, _action="/${EntityNameVar}s/create")
 
