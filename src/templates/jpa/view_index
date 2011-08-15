@@ -1,8 +1,9 @@
 @(title:String, all${EntityName}s:List[models.${EntityName}])
-@main(title) {
+@main(title, true, "${EntityNameVar}s.js") {
 
 <span class="pageTitle">Listing ${EntityName}s</span>
 
+@if(all${EntityName}s != null) {
 <table class="listing">
   <tr>
     ${TableHeaders}
@@ -23,6 +24,11 @@
   }
 
 </table>
+}
+<br />
+
+<table id="listingGrid"></table>
+<div id="pager"></div>
 
 <br />
 
