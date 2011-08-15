@@ -170,6 +170,9 @@ class JQSearch {
     var query = ""
     for (rule <- rules) {
       val condition = JQSearchOperation.operations(rule.op).replace("__VALUE__", rule.data)
+      if (query != "") {
+    	  query += groupOp 
+      }
       query += ("(" + rule.field + " " + condition + ")")
     }
 
