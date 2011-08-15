@@ -13,6 +13,7 @@ import models._
 object ${EntityName}sController extends Controller {
 
   import views.${EntityName}s._
+  import _root_.utils._
   import play.data.validation._
 
   def index = {

@@ -54,6 +54,7 @@ public class ViewGenerator {
 		generateNew(entityName, entityVarName, attributes);
 		generateEdit(entityName, entityVarName, attributes);
 		generateForm(entityName, entityVarName, attributes);
+		generateJQueryJS(entityName, entityVarName, attributes);
 	}
 
 	private static void generateIndex(String entityName, String entityVarName,
@@ -216,6 +217,44 @@ public class ViewGenerator {
 				.append("_year\")\n");
 
 		return formData.toString();
+	}
+
+	private static void generateJQueryJS(String entityName,
+			String entityVarName, Map<String, String> attributes) {
+		String jsTemplate = TemplatesHelper.getTemplate("jpa/grid_js");
+		StringBuilder colModel = new StringBuilder();
+
+		final String COL_MODEL_FORMAT = "{ name: '${header}', index: '${attribute}', hidden: false, sortable: true ${formatOptions} }";
+
+		for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+			String varName = attribute.getKey();
+			String varType = attribute.getValue();
+			varType = TypeRegistry.getTypeName(varType);
+			String model = COL_MODEL_FORMAT.replace("${attribute}", varName);
+			model = model.replace("${header}", capitalize(varName));
+
+			if (varType.equals("Date")
+					|| varType.equals(Calendar.class.getName())) {
+				String formatoptions = ", formatoptions: { srcformat: 'Y/m/d h:i:s', newformat: 'd-M-Y' }";
+				model = model.replace("${formatOptions}", formatoptions);
+
+			} else {
+				model = model.replace("${formatOptions}", "");
+			}
+
+			if (colModel.length() != 0) {
+				colModel.append(", \n");
+			}
+
+			colModel.append(model);
+		}
+
+		jsTemplate = jsTemplate.replace("${EntityName}", entityName);
+		jsTemplate = jsTemplate.replace("${EntityNameVar}", entityVarName);
+		jsTemplate = jsTemplate.replace("${ColumnModel}", colModel);
+
+		TemplatesHelper.flush("public", "javascripts", entityVarName + "s.js",
+				jsTemplate);
 	}
 
 	private static String capitalize(String value) {
