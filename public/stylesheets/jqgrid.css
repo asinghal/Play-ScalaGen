@@ -137,3 +137,5 @@
 .ui-widget-overlay { display: none;}
 .ui-jqdialog { position: absolute; background-color: #fcfdfd; width: 100px; padding: 10px; margin-left: 20%; margin-top: 5%; z-index: 1; }
 .EditTable { width: 100%; }
+
+.ui-jqgrid-bdiv { height: auto !important;} 
