@@ -77,6 +77,18 @@ object ${EntityName}sController extends Controller {
         NotFound("No such ${EntityName}")
     }
   }
+
+  def grid = {
+    var page = if (!isEmptyString(params.get("page"))) params.get("page").toInt else 0
+    var rows = if (!isEmptyString(params.get("rows"))) params.get("rows").toInt else 0
+    var sidx = if (!isEmptyString(params.get("sidx"))) params.get("sidx") else "id"
+    var sord = if (!isEmptyString(params.get("sord"))) params.get("sord") else "desc"
+
+    val all${EntityName}s = ${EntityName}.find(
+      "order by " + sidx + " " + sord).from((page - 1) * rows).fetch(rows);
+
+    JQGridHelper.toJson(page, rows, ${EntityName}.count.toInt, all${EntityName}s)
+  }
   
   private def isEmptyString(input : String) : Boolean = {
   		(input == null || "".equals(input)) 
