@@ -53,6 +53,11 @@ object JQGridHelper {
     json
   }
 
+  def fromJson(json: String) = {
+    val gson = new Gson()
+    gson.fromJson(json, classOf[JQSearch])
+  }
+
   /**
    * Gets the total number of pages corresponding to the data.
    */
@@ -155,4 +160,40 @@ object JQGridRow {
     row.cell = cell.toArray
     row
   }
+}
+
+class JQSearch {
+  var groupOp: String = null
+  var rules: Array[JQSearchRule] = Array()
+
+  def getQuery = {
+    var query = ""
+    for (rule <- rules) {
+      val condition = JQSearchOperation.operations(rule.op).replace("__VALUE__", rule.data)
+      query += ("(" + rule.field + " " + condition + ")")
+    }
+
+    query
+  }
+}
+
+class JQSearchRule {
+  var field: String = null
+  var op: String = null
+  var data: String = ""
+}
+
+object JQSearchOperation {
+  val operations = Map("eq" -> "= '__VALUE__'",
+    "ne" -> "<> '__VALUE__'",
+    "bw" -> "LIKE '__VALUE__%'",
+    "bn" -> "NOT LIKE '__VALUE__%'",
+    "ew" -> "LIKE '__VALUE__%'",
+    "en" -> "NOT LIKE '%__VALUE__'",
+    "cn" -> "LIKE '%__VALUE__%'",
+    "nc" -> "NOT LIKE '%__VALUE__%'",
+    "nu" -> "IS NULL",
+    "nn" -> "IS NOT NULL",
+    "in" -> "IN (__VALUE__)",
+    "ni" -> "NOT IN (__VALUE__)")
 }

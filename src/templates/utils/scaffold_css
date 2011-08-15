@@ -7,8 +7,7 @@ html, body {
 }
 
 body {
-    width: 900px;
-    padding: 0 30px;
+    padding: 10px 75px;
     margin: auto;
     color: #869AB1;
 }
@@ -42,4 +41,13 @@ a {
 .listing td, th {
 	border:1px solid #EEE;
   padding:5px;
+}
+
+#listingGrid table {
+	border-collapse:collapse;
+}
+
+#listingGrid table, td, th {
+	border:1px solid #EEE;
+    padding:5px;
 }

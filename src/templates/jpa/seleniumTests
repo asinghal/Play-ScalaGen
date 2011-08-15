@@ -1,7 +1,7 @@
 *{ You can use plain selenium command using the selenium tag }*
 
 #{selenium 'All ${EntityName}s'}
-    open('/${EntityNameVar}s/')
+    open('/${EntityNameVar}s/?flatHTML=true')
     assertTitle('All ${EntityName}s')
 #{/selenium}
 
@@ -13,7 +13,7 @@
 #{/selenium}
 
 #{selenium 'Update a ${EntityName}'}
-    open('/${EntityNameVar}s/')
+    open('/${EntityNameVar}s/?flatHTML=true')
     clickAndWait('link=Edit')
 	verifyTitle('${EntityName}*')
 	${editFormData}
@@ -22,7 +22,7 @@
 #{/selenium}
 
 #{selenium 'Delete a ${EntityName}'}
-    open('/${EntityNameVar}s/')
+    open('/${EntityNameVar}s/?flatHTML=true')
     clickAndWait('link=Delete')
     assertTitle('All ${EntityName}s')
 #{/selenium}

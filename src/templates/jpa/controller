@@ -16,8 +16,9 @@ object ${EntityName}sController extends Controller {
   import play.data.validation._
 
   def index = {
-    val all${EntityName}s = ${EntityName}.find(
-      "order by id desc").from(0).fetch(100);
+    val showPlainHTML = if (!isEmptyString(params.get("flatHTML"))) params.get("flatHTML").toBoolean else false
+    val all${EntityName}s = if (showPlainHTML) ${EntityName}.find(
+      "order by id desc").from(0).fetch(100) else null
 
     html.index("All ${EntityName}s", all${EntityName}s)
   }
@@ -83,8 +84,16 @@ object ${EntityName}sController extends Controller {
     var rows = if (!isEmptyString(params.get("rows"))) params.get("rows").toInt else 0
     var sidx = if (!isEmptyString(params.get("sidx"))) params.get("sidx") else "id"
     var sord = if (!isEmptyString(params.get("sord"))) params.get("sord") else "desc"
+    var filters = if (!isEmptyString(params.get("filters"))) params.get("filters") else ""
+    var search = if (!isEmptyString(params.get("_search"))) params.get("_search").toBoolean else false
+    var query = ""
+    
+    if (search) {
+      val searchObj = JQGridHelper.fromJson(filters)
+      query = searchObj.getQuery
+    }
 
-    val all${EntityName}s = ${EntityName}.find(
+    val all${EntityName}s = ${EntityName}.find(query +
       "order by " + sidx + " " + sord).from((page - 1) * rows).fetch(rows);
 
     JQGridHelper.toJson(page, rows, ${EntityName}.count.toInt, all${EntityName}s)

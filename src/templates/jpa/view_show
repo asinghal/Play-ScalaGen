@@ -6,6 +6,7 @@
 ${ShowDetails}
 
 <br />
+<br />
 
 <a href="@action(controllers.${EntityName}sController.edit(${EntityNameVar}.id))">Edit</a>|&nbsp;
 <a href="@action(controllers.${EntityName}sController.index)">All ${EntityName}s</a>
