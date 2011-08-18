@@ -17,9 +17,31 @@ play new myproject --with scala
 cd myproject
 play scalagen:generate --scaffold <provide details of the scaffold you need to create>
 
+==========================================================================================================
+Installation:
+==========================================================================================================
+1. Extract the contents of /dist/scalagen-0.1.zip into a local directory on the server.
+2. Add the following to dependencies.yml
+    - customModules -> scalagen
+
+repositories:
+    - playCustomModules:
+        type: local
+        artifact: "/full/path/to/scalagen/directory"
+        contains:
+            - customModules -> *
+3. Run "play deps" on the project
+
+That's it!
+
 --------------------------------------------------------------------------
 Usage Examples: 
 --------------------------------------------------------------------------
+
+*Note*: As a prerequisite, you must install the jquery grid files before a generated scaffold can be used. It is a one time activity per project. Please run the following for the same:
+
+play scalagen:jquery
+
 
 1. Generating a CRUD scaffold:
 --------------------------------------------------------------------------
@@ -29,6 +51,8 @@ play scalagen:generate --scaffold User name:String login:String role:Role
 For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role
 
 This will create a controller, view files for CRUD, JPA model, unit tests for the model and selenium tests for CRUD operations.
+
+*Note*: The generated controllers use JQGrid for the index/ listing page and provide pagination, search and sorting of data. If you would rather use a plain HTML show all view, please pass flatHTML=true in the URL parameters.
 
 2. Generating a JPA model:
 --------------------------------------------------------------------------
