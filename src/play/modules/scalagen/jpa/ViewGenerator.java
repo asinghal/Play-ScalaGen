@@ -193,16 +193,6 @@ public class ViewGenerator {
 			String indexTemplate = TemplatesHelper
 					.getTemplate("jpa/view_dateInput");
 
-			int year = Calendar.getInstance().get(Calendar.YEAR) - 5;
-			StringBuilder formData = new StringBuilder();
-
-			for (int i = year; i < year + 11; i++) {
-				formData.append("<option value=\"").append(year).append("\">")
-						.append(i).append("</option>\n");
-			}
-
-			indexTemplate = indexTemplate.replace("${years}",
-					formData.toString());
 			TemplatesHelper.flush("app", "views", "dateInput.scala.html",
 					indexTemplate);
 		}
