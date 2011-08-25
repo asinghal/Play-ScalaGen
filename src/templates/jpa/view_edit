@@ -1,5 +1,5 @@
 @(title:String, ${EntityNameVar}:models.${EntityName})
-@import views.${EntityName}s.html.form
+@import views.${EntityNameVar}s.html.form
 @main(title) {
 
 <span class="pageTitle">Edit ${EntityName}</span>

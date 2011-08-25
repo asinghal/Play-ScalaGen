@@ -87,7 +87,7 @@ public class ViewGenerator {
 				.replace("${EntityNameVar}", entityVarName);
 
 		TemplatesHelper.flush("app",
-				"views" + System.getProperty("file.separator") + entityName
+				"views" + System.getProperty("file.separator") + entityVarName
 						+ "s", "index.scala.html", indexTemplate);
 	}
 
@@ -118,7 +118,7 @@ public class ViewGenerator {
 				.replace("${EntityNameVar}", entityVarName);
 
 		TemplatesHelper.flush("app",
-				"views" + System.getProperty("file.separator") + entityName
+				"views" + System.getProperty("file.separator") + entityVarName
 						+ "s", "show.scala.html", indexTemplate);
 	}
 
@@ -131,7 +131,7 @@ public class ViewGenerator {
 				.replace("${EntityNameVar}", entityVarName);
 
 		TemplatesHelper.flush("app",
-				"views" + System.getProperty("file.separator") + entityName
+				"views" + System.getProperty("file.separator") + entityVarName
 						+ "s", "newValue.scala.html", indexTemplate);
 	}
 
@@ -144,7 +144,7 @@ public class ViewGenerator {
 				.replace("${EntityNameVar}", entityVarName);
 
 		TemplatesHelper.flush("app",
-				"views" + System.getProperty("file.separator") + entityName
+				"views" + System.getProperty("file.separator") + entityVarName
 						+ "s", "edit.scala.html", indexTemplate);
 	}
 
@@ -184,7 +184,7 @@ public class ViewGenerator {
 		formTemplate = formTemplate.replace("${EntityNameVar}", entityVarName);
 
 		TemplatesHelper.flush("app",
-				"views" + System.getProperty("file.separator") + entityName
+				"views" + System.getProperty("file.separator") + entityVarName
 						+ "s", "form.scala.html", formTemplate);
 	}
 

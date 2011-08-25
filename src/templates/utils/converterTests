@@ -26,42 +26,47 @@ import _root_.utils._
 
 class ConverterTest extends UnitFlatSpec with ShouldMatchers {
 
-	it should "create convert to int" in {
+	it should "convert string to int" in {
 		val clazz = classOf[Int]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to long" in {
+	
+	it should "convert string to long" in {
 		val clazz = classOf[Long]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to string" in {
+	
+	it should "convert string to string" in {
 		val clazz = classOf[String]
 		var value: String = Converter.convert(clazz.getName, clazz, "abc").asInstanceOf[String]
 		(value)should be("abc")
 		value = Converter.convert(clazz.getName, clazz, null).asInstanceOf[String]
 		(value)should be(null)
 	}
-	it should "create convert to double" in {
+	
+	it should "convert string to double" in {
 		val clazz = classOf[Double]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to char" in {
+	
+	it should "convert string to char" in {
 		val clazz = classOf[Char]
 		var value = Converter.convert(clazz.getName, clazz, "a")
 		(value)should be('a') 
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(' ') 
 	}
-	it should "create convert to boolean" in {
+	
+	it should "convert string to boolean" in {
 		val clazz = classOf[Boolean]
 		var value:Boolean = Converter.convert(clazz.getName, clazz, "true").asInstanceOf[Boolean]
 		(value)should be(true)
@@ -69,35 +74,40 @@ class ConverterTest extends UnitFlatSpec with ShouldMatchers {
 		value = Converter.convert(clazz.getName, clazz, null).asInstanceOf[Boolean]
 		(value)should be(false) 
 	}
-	it should "create convert to float" in {
+	
+	it should "convert string to float" in {
 		val clazz = classOf[Float]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to byte" in {
+	
+	it should "convert string to byte" in {
 		val clazz = classOf[Byte]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to short" in {
+	
+	it should "convert string to short" in {
 		val clazz = classOf[Short]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to bigdecimal" in {
+	
+	it should "convert string to bigdecimal" in {
 		val clazz = classOf[BigDecimal]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
 		value = Converter.convert(clazz.getName, clazz, null)
 		(value)should be(0)
 	}
-	it should "create convert to bigint" in {
+	
+	it should "convert string to bigint" in {
 		val clazz = classOf[BigInt]
 		var value = Converter.convert(clazz.getName, clazz, "1")
 		(value)should be(1)
