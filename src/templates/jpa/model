@@ -6,11 +6,23 @@ import play.db.jpa._
 
 import _root_.utils._
 
+/**
+ * Represents a ${EntityName}.
+ */
 @Entity
+@Table(name="${TableName}")
 class ${EntityName} extends Model {
   ${EntityAttributes}
 }
 
+/**
+ * Singleton object of <code>models.${EntityName}</code> that provides the following.
+ * <ol>
+ * <li>Serves as a DAO for ${EntityName}. </li>
+ * <li>Provides a builder method for creating objects of ${EntityName}.</li>
+ * <li>Enables creation of an instance by binding posted values in HTTP request</li>
+ * </ol> 
+ */
 object ${EntityName} extends QueryOn[${EntityName}] with HttpBinder[${EntityName}] {
 
   def build(${ConstructorParams}): ${EntityName} = {

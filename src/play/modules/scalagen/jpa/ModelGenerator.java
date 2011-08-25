@@ -17,6 +17,8 @@ package play.modules.scalagen.jpa;
 
 import java.util.Map;
 
+import org.jvnet.inflector.Noun;
+
 import play.modules.scalagen.TypeRegistry;
 import play.modules.scalagen.util.TemplatesHelper;
 
@@ -46,6 +48,8 @@ public class ModelGenerator {
 
 		template = template.replace("${EntityName}", entityName);
 		template = template.replace("${EntityNameVar}", entityVarName);
+		template = template
+				.replace("${TableName}", getTableName(entityVarName));
 
 		template = buildAttributes(template, entityVarName, attributes);
 
@@ -54,6 +58,43 @@ public class ModelGenerator {
 		generateTests(entityName, entityVarName, attributes);
 
 		generateYML(entityName, entityVarName, attributes);
+	}
+
+	/**
+	 * Generates a table name for the entity.
+	 * 
+	 * @param entityVarName
+	 * @return
+	 */
+	private static String getTableName(String entityVarName) {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < entityVarName.length(); i++) {
+			char c = entityVarName.charAt(i);
+			if (Character.isUpperCase(c)) {
+				sb.append("_").append(Character.toLowerCase(c));
+			} else {
+				sb.append(c);
+			}
+		}
+
+		String name = sb.toString();
+		String[] parts = name.split("_");
+		String last = parts[parts.length - 1];
+
+		if (!last.endsWith("s")) {
+			parts[parts.length - 1] = Noun.pluralOf(last);
+		}
+
+		name = "";
+
+		for (int i = 0; i < parts.length; i++) {
+			if (!name.trim().equals("")) {
+				name += "_";
+			}
+			name += parts[i];
+		}
+		return name;
 	}
 
 	private static void generateTests(String entityName, String entityVarName,
