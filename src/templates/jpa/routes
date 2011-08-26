@@ -1,8 +1,8 @@
 GET     /${EntityNameVar}s/?                                 ${EntityName}sController.index
 GET     /${EntityNameVar}s/new                              ${EntityName}sController.newValue
 GET     /${EntityNameVar}s/grid                              ${EntityName}sController.grid
-*     /${EntityNameVar}s/create                             ${EntityName}sController.create
+POST     /${EntityNameVar}s/create                             ${EntityName}sController.create
 GET     /${EntityNameVar}s/{id}/edit                        ${EntityName}sController.edit
-*     /${EntityNameVar}s/{id}/update                        ${EntityName}sController.update
+POST     /${EntityNameVar}s/{id}/update                        ${EntityName}sController.update
 GET     /${EntityNameVar}s/{id}/delete                      ${EntityName}sController.delete
 GET     /${EntityNameVar}s/{id}                             ${EntityName}sController.show
