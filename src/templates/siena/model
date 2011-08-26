@@ -1,0 +1,34 @@
+package models
+
+import java.util._
+import siena._
+
+import _root_.utils._
+
+/**
+ * Represents a ${EntityName}.
+ */
+@Table("${TableName}")
+class ${EntityName} extends Model {
+  @Id
+  var id: Long = 0
+
+  ${EntityAttributes}
+}
+
+/**
+ * Singleton object of <code>models.${EntityName}</code> that provides the following.
+ * <ol>
+ * <li>Serves as a DAO for ${EntityName}. </li>
+ * <li>Provides a builder method for creating objects of ${EntityName}.</li>
+ * <li>Enables creation of an instance by binding posted values in HTTP request</li>
+ * </ol> 
+ */
+object ${EntityName} extends QueryOn[${EntityName}] with HttpBinder[${EntityName}] {
+
+  def build(${ConstructorParams}): ${EntityName} = {
+    val ${EntityNameVar} = new ${EntityName}
+    ${EntityAttributesAssignment}
+    return ${EntityNameVar}
+  }  
+}

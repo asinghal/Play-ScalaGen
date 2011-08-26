@@ -1,0 +1,106 @@
+package controllers
+
+import java.util._
+
+import play._
+import play.mvc._
+
+import models._
+
+/**
+ * Controller class for ${EntityName}. Defines methods for all CRUD operations.
+ */
+object ${EntityName}sController extends Controller {
+
+  import views.${EntityNameVar}s._
+  import _root_.utils._
+  import play.data.validation._
+
+  def index = {
+    val showPlainHTML = if (!isEmptyString(params.get("flatHTML"))) params.get("flatHTML").toBoolean else false
+    val all${EntityName}s = if (showPlainHTML) ${EntityName}.all else null
+
+    html.index("All ${EntityName}s", all${EntityName}s)
+  }
+
+  def show(id: Long) = {
+
+	${EntityName}.findById(id).map { ${EntityNameVar} =>
+      html.show("${EntityName} " + id, ${EntityNameVar})
+    }.getOrElse {
+      NotFound("No such ${EntityName}")
+    }
+  }
+
+  def newValue() = {
+     var ${EntityNameVar} = new ${EntityName}
+     html.newValue("New ${EntityName}", ${EntityNameVar})
+  }
+
+  def edit(id: Long) = {
+  
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+      html.edit("${EntityName} " + id, ${EntityNameVar})
+    }.getOrElse {
+      NotFound("No such ${EntityName}")
+    }
+  }
+
+  def create() = {
+        var ${EntityNameVar} = new ${EntityName}
+        ${EntityName}.bind(params, ${EntityNameVar})
+        ${formData}
+        ${EntityNameVar}.save
+  
+        show(${EntityNameVar}.id)
+  }
+
+  def update(id: Long) = {
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+        ${EntityName}.bind(params, ${EntityNameVar})
+        ${formData}
+        ${EntityNameVar}.save
+        
+        show(id)
+
+    }.getOrElse {
+        NotFound("No such ${EntityName}")
+    }
+  }
+  
+  def delete(id: Long) = {
+    ${EntityName}.findById(id).map { ${EntityNameVar} =>
+        ${EntityNameVar}.delete
+        
+        index
+
+    }.getOrElse {
+        NotFound("No such ${EntityName}")
+    }
+  }
+
+  def grid = {
+    val page = if (!isEmptyString(params.get("page"))) params.get("page").toInt else 0
+    val rows = if (!isEmptyString(params.get("rows"))) params.get("rows").toInt else 0
+    val sidx = if (!isEmptyString(params.get("sidx"))) params.get("sidx") else "id"
+    var sord = if (!isEmptyString(params.get("sord"))) params.get("sord") else "desc"
+    val filters = if (!isEmptyString(params.get("filters"))) params.get("filters") else ""
+    val search = if (!isEmptyString(params.get("_search"))) params.get("_search").toBoolean else false
+    var query = ""
+    
+    sord = if (sord == "desc") "-" else ""
+    
+    if (search) {
+      val searchObj = JQGridHelper.fromJson(filters)
+      query = searchObj.getQuery
+    }
+
+    val all${EntityName}s = ${EntityName}.all(sidx + sord, (page - 1) * rows, rows)
+
+    JQGridHelper.toJson(page, rows, ${EntityName}.count.toInt, all${EntityName}s)
+  }
+  
+  private def isEmptyString(input : String) : Boolean = {
+  		(input == null || "".equals(input)) 
+  }
+}

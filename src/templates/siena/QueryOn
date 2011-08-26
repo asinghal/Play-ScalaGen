@@ -1,0 +1,81 @@
+package siena
+
+import scala.collection.JavaConversions._
+
+/**
+ * Provides DAO methods for Model objects
+ */
+trait QueryOn[T <: Model] {
+
+  type M[T] = Manifest[T]
+
+  /**
+   * Finds an object by the given id (primary key).
+   *
+   * @param id
+   * @param m
+   * @return
+   */
+  def findById(id: Long)(implicit m: M[T]): Option[T] = {
+    Model.getByKey(m.erasure, id) match {
+      case x: AnyRef => Some(x.asInstanceOf[T])
+      case _ => None
+    }
+  }
+
+  /**
+   * Returns the number of records for this model.
+   *
+   * @param m
+   * @return
+   */
+  def count(implicit m: M[T]) = {
+    Model.all(m.erasure).count
+  }
+
+  /**
+   * Fetches all (but limited to a max of 100) records of this model ordered by id.
+   *
+   * @param m
+   * @return
+   */
+  def all()(implicit m: M[T]): scala.List[T] = {
+    all("id", 0, 100)
+  }
+
+  /**
+   * Fetches records of this model starting from the specified offset and limited to the specified
+   * number, and ordered by the specified field.
+   *
+   * @param orderBy
+   * @param offset
+   * @param limit
+   * @param m
+   * @return
+   */
+  def all(orderBy: String, offset: Int, limit: Int)(implicit m: M[T]): scala.List[T] = {
+    Model.all(m.erasure).order(orderBy).fetch(limit, offset).toList.asInstanceOf[scala.List[T]]
+  }
+
+  /**
+   * Filters the result set on a field.
+   *
+   * @param fieldName
+   * @param value
+   * @param m
+   * @return
+   */
+  def filter(fieldName: String, value: Any)(implicit m: M[T]): scala.List[T] = {
+    Model.all(m.erasure).filter(fieldName, value).fetch.toList.asInstanceOf[scala.List[T]]
+  }
+
+  /**
+   * Deletes all records for this model.
+   *
+   * @param m
+   * @return
+   */
+  def deleteAll(implicit m: M[T]) = {
+    Model.all(m.erasure).delete
+  }
+}
