@@ -9,6 +9,7 @@ Options:
 
 --scaffold-jpa [entity name] [attribute1:type1]*     Generates the JPA based model and associated CRUD code.
 --model-jpa [entity name] [attribute1:type1]*         Generates the JPA based model.
+--scaffold-siena [entity name] [attribute1:type1]*     Generates the Siena based model and associated CRUD code.
 
 Note: --scaffold and --model are shortcuts to generate JPA
 
@@ -50,7 +51,10 @@ play scalagen:generate --scaffold User name:String login:String role:Role
 
 For the lazy, the following does the same: play scalagen:g --s User name:String login:String role:Role
 
-This will create a controller, view files for CRUD, JPA model, unit tests for the model and selenium tests for CRUD operations.
+The Siena equivalent is :
+play scalagen:g --ss User name:String login:String role:Role
+
+This will create a controller, view files for CRUD, model, unit tests for the model and selenium tests for CRUD operations.
 
 *Note*: The generated controllers use JQGrid for the index/ listing page and provide pagination, search and sorting of data. If you would rather use a plain HTML show all view, please pass flatHTML=true in the URL parameters.
 
