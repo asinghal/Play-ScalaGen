@@ -44,8 +44,8 @@ public class ControllerGenerator {
 	 * @param attributes
 	 */
 	public static void generate(String entityName,
-			Map<String, String> attributes) {
-		String template = TemplatesHelper.getTemplate("jpa/controller");
+			Map<String, String> attributes, String scheme) {
+		String template = TemplatesHelper.getTemplate(scheme + "/controller");
 
 		String entityVarName = Character.toLowerCase(entityName.charAt(0))
 				+ entityName.substring(1);

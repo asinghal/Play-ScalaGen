@@ -74,16 +74,25 @@ public class Generator {
 		if (command.equals("--model") || command.equals("--model-jpa")
 				|| command.equals("--m")) {
 			UtilsGenerator.generate();
-			ModelGenerator.generate(entityName, attributes);
+			ModelGenerator.generate(entityName, attributes, "jpa");
 		}
 
 		if (command.equals("--scaffold") || command.equals("--scaffold-jpa")
 				|| command.equals("--s")) {
 			UtilsGenerator.generate();
-			ModelGenerator.generate(entityName, attributes);
+			ModelGenerator.generate(entityName, attributes, "jpa");
 			ViewGenerator.generate(entityName, attributes);
 			SeleniumTestGenerator.generate(entityName, attributes);
-			ControllerGenerator.generate(entityName, attributes);
+			ControllerGenerator.generate(entityName, attributes, "jpa");
+		}
+		
+		if (command.equals("--scaffold-siena")
+				|| command.equals("--ss")) {
+			UtilsGenerator.generate();
+			ModelGenerator.generate(entityName, attributes, "siena");
+			ViewGenerator.generate(entityName, attributes);
+			SeleniumTestGenerator.generate(entityName, attributes);
+			ControllerGenerator.generate(entityName, attributes, "siena");
 		}
 
 	}

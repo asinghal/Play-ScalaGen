@@ -40,8 +40,8 @@ public class ModelGenerator {
 	 * @param attributes
 	 */
 	public static void generate(String entityName,
-			Map<String, String> attributes) {
-		String template = TemplatesHelper.getTemplate("jpa/model");
+			Map<String, String> attributes, String scheme) {
+		String template = TemplatesHelper.getTemplate(scheme + "/model");
 
 		String entityVarName = Character.toLowerCase(entityName.charAt(0))
 				+ entityName.substring(1);
@@ -51,13 +51,27 @@ public class ModelGenerator {
 		template = template
 				.replace("${TableName}", getTableName(entityVarName));
 
-		template = buildAttributes(template, entityVarName, attributes);
+		template = buildAttributes(template, entityVarName, attributes, scheme);
 
 		TemplatesHelper.flush("app", "models", entityName + ".scala", template);
 
-		generateTests(entityName, entityVarName, attributes);
+		generateTests(entityName, entityVarName, attributes, scheme);
 
 		generateYML(entityName, entityVarName, attributes);
+
+		if ("siena".equals(scheme)) {
+			generateQueryTrait();
+		}
+	}
+
+	private static void generateQueryTrait() {
+		if (!TemplatesHelper.exists("app", "siena", "QueryOn.scala")) {
+			String template = TemplatesHelper.getTemplate("siena/QueryOn");
+			TemplatesHelper.flush("app", "siena", "QueryOn.scala", template);
+		} else {
+			System.out
+					.println("* app/siena/QueryOn.scala already exists. Skipping.");
+		}
 	}
 
 	/**
@@ -98,19 +112,19 @@ public class ModelGenerator {
 	}
 
 	private static void generateTests(String entityName, String entityVarName,
-			Map<String, String> attributes) {
-		String template = TemplatesHelper.getTemplate("jpa/modelTest");
+			Map<String, String> attributes, String scheme) {
+		String template = TemplatesHelper.getTemplate(scheme + "/modelTest");
 
 		template = template.replace("${EntityName}", entityName);
 		template = template.replace("${EntityNameVar}", entityVarName);
 
-		template = buildTestAttributes(template, entityName, attributes);
+		template = buildTestAttributes(template, entityName, attributes, scheme);
 
 		TemplatesHelper.flush("test", "tests", entityName + ".scala", template);
 	}
 
 	private static String buildAttributes(String template,
-			String entityVarName, Map<String, String> attributes) {
+			String entityVarName, Map<String, String> attributes, String scheme) {
 		StringBuilder varDefinitions = new StringBuilder();
 		StringBuilder constructorParams = new StringBuilder();
 		StringBuilder entityAttributesAssignment = new StringBuilder();
@@ -132,7 +146,7 @@ public class ModelGenerator {
 			var = var.replace("${attributeType}", varType);
 			var = var.replace("${attributeDefaultValue}", defaultVal);
 
-			if (!TypeRegistry.isRegistered(varType)) {
+			if (!TypeRegistry.isRegistered(varType) && "jpa".equals(scheme)) {
 				var = "@ManyToOne\n  " + var;
 			}
 
@@ -161,7 +175,7 @@ public class ModelGenerator {
 	}
 
 	private static String buildTestAttributes(String template,
-			String entityName, Map<String, String> attributes) {
+			String entityName, Map<String, String> attributes, String scheme) {
 		StringBuilder DependentObjects = new StringBuilder();
 		StringBuilder assertions = new StringBuilder();
 		StringBuilder TestDataValues = new StringBuilder();
@@ -214,8 +228,9 @@ public class ModelGenerator {
 
 				// if the fetch query has not been defined yet, define now.
 				if (pending && !testDataVal.startsWith("new ")) {
-					String query = Character.toUpperCase(varName.charAt(0))
-							+ varName.substring(1);
+					String query = "jpa".equals(scheme) ? Character
+							.toUpperCase(varName.charAt(0))
+							+ varName.substring(1) : varName;
 					template = template.replace("${attributeName}", query);
 					template = template.replace("${attributeValue}",
 							testDataVal);
