@@ -162,15 +162,15 @@ public class ViewGenerator {
 			String varType = attribute.getValue();
 			varType = TypeRegistry.getTypeName(varType);
 
-			formData.append("<br/>    <label for=\"").append(varName)
+			formData.append("<div class=\"field_row\"><label for=\"").append(varName)
 					.append("\">").append(capitalize(varName))
-					.append("</label>:");
+					.append(":</label><div class=\"field_holder\">");
 			if (!varType.equals("Date")
 					&& !varType.equals(Calendar.class.getName())) {
 				formData.append("<input type=\"text\" id=\"").append(varName)
 						.append("\" name=\"").append(varName)
 						.append("\" value=\"@_").append(entityVarName)
-						.append(".").append(varName).append("\" />\n");
+						.append(".").append(varName).append("\" /></div></div>\n");
 			} else {
 				formData.append(getDateElement(varName));
 			}
@@ -225,7 +225,7 @@ public class ViewGenerator {
 
 			if (varType.equals("Date")
 					|| varType.equals(Calendar.class.getName())) {
-				String formatoptions = ", formatoptions: { srcformat: 'Y/m/d h:i:s', newformat: 'd-M-Y' }";
+				String formatoptions = ", formatter:'date', formatoptions: { srcformat: 'Y-m-d H:i:sO', newformat: 'd-m-Y' }";
 				model = model.replace("${formatOptions}", formatoptions);
 
 			} else {

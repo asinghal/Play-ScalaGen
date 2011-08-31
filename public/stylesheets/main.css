@@ -50,3 +50,7 @@ a {
 	border:1px solid #EEE;
     padding:5px;
 }
+
+.field_row            {padding: 10px 0; }
+.field_row label            {width: 140px; float: left; font-size: 13px; text-align:left;}
+.field_holder         {padding-left: 15px;  float: left; width: 450px;}

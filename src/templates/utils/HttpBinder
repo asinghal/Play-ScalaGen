@@ -112,7 +112,7 @@ object DateConverter extends Converter[Date] {
   import java.text.SimpleDateFormat
 
   override def convert(s: String): Date = {
-    new SimpleDateFormat("mm/dd/yyyy").parse(s);
+    new SimpleDateFormat("MM/dd/yyyy").parse(s);
   }
 
   override def getDefault: Date = {
