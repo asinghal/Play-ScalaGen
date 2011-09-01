@@ -38,19 +38,7 @@ import play.templates.TemplateLoader
  */
 trait EmailNotifier extends LocalVariablesSupport {
 
-  @Required
-  var subject: String = null
-  @Required
-  var recipients = List[String]()
-  @Required
-  var from: String = null
-  var ccRecipients = List[String]()
-  var bccRecipients = List[String]()
-  var attachments = List[EmailAttachment]()
-  var contentType: String = null
-  var replyTo: String = null
-  var charset: String = "utf-8"
-  var headers = Map[String, String]()
+  var notifications = new ThreadLocal[EmailNotificationContext]
 
   /**
    * Sets a subject for this email. It enables formatting of the providing string using Java's
@@ -60,7 +48,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param args
    */
   def setSubject(subject: String, args: AnyRef*) = {
-    this.subject = String.format(subject, args: _*)
+    current.subject = String.format(subject, args: _*)
   }
 
   /**
@@ -69,7 +57,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param recipients
    */
   def addRecipient(recipients: String*) = {
-    this.recipients = this.recipients ::: List(recipients: _*)
+    current.recipients :::= List(recipients: _*)
   }
 
   /**
@@ -78,7 +66,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param from
    */
   def addFrom(from: String) = {
-    this.from = from
+    current.from = from
   }
 
   /**
@@ -87,7 +75,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param ccRecipients
    */
   def addCc(ccRecipients: String*) = {
-    this.ccRecipients = this.ccRecipients ::: List(ccRecipients: _*)
+    current.ccRecipients :::= List(ccRecipients: _*)
   }
 
   /**
@@ -96,7 +84,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param bccRecipients
    */
   def addBcc(bccRecipients: String*) = {
-    this.bccRecipients = this.bccRecipients ::: List(bccRecipients: _*)
+    current.bccRecipients :::= List(bccRecipients: _*)
   }
 
   /**
@@ -105,7 +93,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param attachments
    */
   def addAttachment(attachments: EmailAttachment*) = {
-    this.attachments = this.attachments ::: List(attachments).asInstanceOf[List[EmailAttachment]]
+    current.attachments :::= List(attachments).asInstanceOf[List[EmailAttachment]]
   }
 
   /**
@@ -113,7 +101,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param contentType
    */
   def setContentType(contentType: String) = {
-    this.contentType = this.contentType
+    current.contentType = contentType
   }
 
   /**
@@ -122,7 +110,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param charset
    */
   def setCharset(charset: String) = {
-    this.charset = this.charset
+    current.charset = charset
   }
 
   /**
@@ -131,7 +119,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param replyTo
    */
   def setReplyTo(replyTo: String) = {
-    this.replyTo = replyTo
+    current.replyTo = replyTo
   }
 
   /**
@@ -141,7 +129,7 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param value
    */
   def addHeader(key: String, value: String) = {
-    headers += (key -> value)
+    current.headers += (key -> value)
   }
 
   /**
@@ -170,27 +158,30 @@ trait EmailNotifier extends LocalVariablesSupport {
       }
     }
 
-    val bodyHtml: String = getBody(templateName + ".html", templateHtmlBinding, contentType)
-    var bodyText: String = getBody(templateName + ".txt", templateTextBinding, contentType)
+    val bodyHtml: String = getBody(templateName + ".html", templateHtmlBinding, current.contentType)
+    var bodyText: String = getBody(templateName + ".txt", templateTextBinding, current.contentType)
 
     // Content type
     ensureContentTypeDefined(bodyHtml)
 
     var email: MultiPartEmail = getEmail(bodyText, bodyHtml)
 
-    attachments.foreach(email.attach(_))
+    current.attachments.foreach(email.attach(_))
 
-    email.setCharset(charset)
+    email.setCharset(current.charset)
 
-    setAddress(from) { (address, name) => email.setFrom(address, name) }
-    setAddress(replyTo) { (address, name) => email.addReplyTo(address, name) }
-    recipients.foreach(setAddress(_) { (address, name) => email.addTo(address, name) })
-    ccRecipients.foreach(setAddress(_) { (address, name) => email.addCc(address, name) })
-    bccRecipients.foreach(setAddress(_) { (address, name) => email.addBcc(address, name) })
+    setAddress(current.from) { (address, name) => email.setFrom(address, name) }
+    setAddress(current.replyTo) { (address, name) => email.addReplyTo(address, name) }
+    current.recipients.foreach(setAddress(_) { (address, name) => email.addTo(address, name) })
+    current.ccRecipients.foreach(setAddress(_) { (address, name) => email.addCc(address, name) })
+    current.bccRecipients.foreach(setAddress(_) { (address, name) => email.addBcc(address, name) })
 
-    email.setSubject(subject)
-    email.updateContentType(contentType)
-    headers foreach ((entry) => email.addHeader(entry._1, entry._2))
+    email.setSubject(current.subject)
+    email.updateContentType(current.contentType)
+    current.headers foreach ((entry) => email.addHeader(entry._1, entry._2))
+    
+    // now flush the stored context
+    notifications.remove
 
     Mail.send(email)
   }
@@ -200,18 +191,18 @@ trait EmailNotifier extends LocalVariablesSupport {
    * <code>@Required</code> and ensures a value is set to them.
    */
   private def validate = {
-    var fields = this.getClass.getDeclaredFields
+    var fields = current.getClass.getDeclaredFields
     for (field <- fields) {
       val ann = field.getAnnotation(classOf[Required])
       if (ann != null) {
         var access = field.isAccessible
         field.setAccessible(true)
-        val value = field.get(this)
+        val value = field.get(current)
         field.setAccessible(access)
         if (!new RequiredCheck().isSatisfied(null, value, null, null)) {
           throw new MailException(field.getName + " is required (but not provided).")
         }
-		
+
         if (classOf[Seq[_]].isAssignableFrom(field.getType)) {
           var s = value.asInstanceOf[Seq[_]]
           if (s.size == 0) {
@@ -272,11 +263,11 @@ trait EmailNotifier extends LocalVariablesSupport {
    * @param bodyHtml
    */
   private def ensureContentTypeDefined(bodyHtml: String) = {
-    if (contentType == null) {
+    if (current.contentType == null) {
       if (bodyHtml != null) {
-        contentType = "text/html";
+        current.contentType = "text/html";
       } else {
-        contentType = "text/plain";
+        current.contentType = "text/plain";
       }
     }
   }
@@ -296,11 +287,44 @@ trait EmailNotifier extends LocalVariablesSupport {
       body = template.render(templateBinding)
     } catch {
       case e: TemplateNotFoundException =>
-        if (this.contentType != null && this.contentType != contentType) {
+        if (current.contentType != null && current.contentType != contentType) {
           throw e;
         }
     }
 
     return body
   }
+
+  /**
+   * Gets the current notification context as stored.
+   * @return
+   */
+  private def current = {
+    var notification = notifications.get
+    if (notification == null) {
+      notification = new EmailNotificationContext
+      notifications.set(notification)
+    }
+
+    notification
+  }
+
+}
+
+class EmailNotificationContext {
+
+  @Required
+  var subject: String = null
+  @Required
+  var recipients = List[String]()
+  @Required
+  var from: String = null
+  var ccRecipients = List[String]()
+  var bccRecipients = List[String]()
+  var attachments = List[EmailAttachment]()
+  var contentType: String = null
+  var replyTo: String = null
+  var charset: String = "utf-8"
+  var headers = Map[String, String]()
+
 }
