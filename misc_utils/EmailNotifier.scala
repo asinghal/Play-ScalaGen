@@ -211,6 +211,13 @@ trait EmailNotifier extends LocalVariablesSupport {
         if (!new RequiredCheck().isSatisfied(null, value, null, null)) {
           throw new MailException(field.getName + " is required (but not provided).")
         }
+		
+        if (classOf[Seq[_]].isAssignableFrom(field.getType)) {
+          var s = value.asInstanceOf[Seq[_]]
+          if (s.size == 0) {
+            throw new MailException(field.getName + " is required (but not provided).")
+          }
+        }
       }
     }
   }
