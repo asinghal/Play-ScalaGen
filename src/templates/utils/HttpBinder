@@ -35,7 +35,7 @@ trait HttpBinder[T] {
         s = params.get(field.getName() + "_month") + "/" + params.get(field.getName() + "_day") +
           "/" + params.get(field.getName() + "_year")
       }
-      val value = Converter.convert(field.getType.getName, field.getType, s)
+      val value = Converter.convert(field.getType.getName, s)
       val access: Boolean = field.isAccessible
 
       field.setAccessible(true)
@@ -54,7 +54,7 @@ object Converter {
     classOf[Short].getName -> ShortConverter, classOf[BigDecimal].getName -> BigDecimalConverter, classOf[BigInt].getName -> BigIntConverter,
     classOf[Calendar].getName -> CalendarConverter)
 
-  def convert[T](className: String, clazz: Class[T], s: String): Any = {
+  def convert[T](className: String, s: String): Any = {
     if (className.startsWith("models.")) {
       null
     } else {

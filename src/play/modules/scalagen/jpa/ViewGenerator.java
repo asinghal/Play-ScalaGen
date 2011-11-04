@@ -225,7 +225,7 @@ public class ViewGenerator {
 
 			if (varType.equals("Date")
 					|| varType.equals(Calendar.class.getName())) {
-				String formatoptions = ", formatter:'date', formatoptions: { srcformat: 'Y-m-d H:i:sO', newformat: 'd-m-Y' }";
+				String formatoptions = ", formatter:'date', formatoptions: { srcformat: 'Y-m-d H:i:sO', newformat: 'F dS Y' }";
 				model = model.replace("${formatOptions}", formatoptions);
 
 			} else {

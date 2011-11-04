@@ -77,6 +77,11 @@ public class Generator {
 			ModelGenerator.generate(entityName, attributes, "jpa");
 		}
 
+        if (command.equals("--model-siena") || command.equals("--ms")) {
+            UtilsGenerator.generate();
+            ModelGenerator.generate(entityName, attributes, "siena");
+        }
+
 		if (command.equals("--scaffold") || command.equals("--scaffold-jpa")
 				|| command.equals("--s")) {
 			UtilsGenerator.generate();

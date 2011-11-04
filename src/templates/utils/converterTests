@@ -28,90 +28,90 @@ class ConverterTest extends UnitFlatSpec with ShouldMatchers {
 
 	it should "convert string to int" in {
 		val clazz = classOf[Int]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to long" in {
 		val clazz = classOf[Long]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to string" in {
 		val clazz = classOf[String]
-		var value: String = Converter.convert(clazz.getName, clazz, "abc").asInstanceOf[String]
+		var value: String = Converter.convert(clazz.getName, "abc").asInstanceOf[String]
 		(value)should be("abc")
-		value = Converter.convert(clazz.getName, clazz, null).asInstanceOf[String]
+		value = Converter.convert(clazz.getName, null).asInstanceOf[String]
 		(value)should be(null)
 	}
 	
 	it should "convert string to double" in {
 		val clazz = classOf[Double]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to char" in {
 		val clazz = classOf[Char]
-		var value = Converter.convert(clazz.getName, clazz, "a")
+		var value = Converter.convert(clazz.getName, "a")
 		(value)should be('a') 
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(' ') 
 	}
 	
 	it should "convert string to boolean" in {
 		val clazz = classOf[Boolean]
-		var value:Boolean = Converter.convert(clazz.getName, clazz, "true").asInstanceOf[Boolean]
+		var value:Boolean = Converter.convert(clazz.getName, "true").asInstanceOf[Boolean]
 		(value)should be(true)
 		
-		value = Converter.convert(clazz.getName, clazz, null).asInstanceOf[Boolean]
+		value = Converter.convert(clazz.getName, null).asInstanceOf[Boolean]
 		(value)should be(false) 
 	}
 	
 	it should "convert string to float" in {
 		val clazz = classOf[Float]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to byte" in {
 		val clazz = classOf[Byte]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to short" in {
 		val clazz = classOf[Short]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to bigdecimal" in {
 		val clazz = classOf[BigDecimal]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 	
 	it should "convert string to bigint" in {
 		val clazz = classOf[BigInt]
-		var value = Converter.convert(clazz.getName, clazz, "1")
+		var value = Converter.convert(clazz.getName, "1")
 		(value)should be(1)
-		value = Converter.convert(clazz.getName, clazz, null)
+		value = Converter.convert(clazz.getName, null)
 		(value)should be(0)
 	}
 }
